@@ -7,31 +7,28 @@ As ferramentas escolhidas para o desenvolvimento do projeto foram a Unity3D para
 \label{sec:estrutura}
 
 \begin{figure}[htb]
-\caption{\label{fig:comparacaoaprendizado} Comparaçao entre aprendizados}
+\caption{\label{fig:estrutura} Fluxo De Dados }
 \begin{center}
-\includegraphics[scale=0.75]{ComparaAprendizado}
+\includegraphics[scale=0.75]{estrutura}
 \end{center}
 \legend{Fonte: \citeauthor{mediummachine}, \citeyear{mediummachine}} 
 \end{figure}
 
-A aplicações se comunicam com o servidor por meio do protocolo REST.
+A figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clientes (Web ou Unity) fazem requisições  para uma API que busca ou guarda os dados em um banco de dados relacional (SQL Server) e retorna o resultado da operação.
 
 \section{REST API}
 \label{sec:restapi}
 
 
+A API serve como centro do projeto. Ela guarda todas as questões, usuários, opções e os rankings. Ela decide também quais e quantas questões um jogador irá receber quando uma nova partida for requisitada. 
+Os clientes e a API se comunicam utilizando o protocolo Http\cite{fielding_reschke_2014} através do protocolo rest  REST\cite{wwrest}, enviando e recebendo JSONs.
 
-\subsection{Visão Geral}
-\label{subsec:visaogeral}
-
-A API serve como centro do projeto. Ela guarda todas as questões, usuários, opções e os rankings. Ela decide também quais e quantas questões um jogador irá receber quando uma nova partida for requisitada. Os clientes e a API se comunicam através do protocolo REST, enviando e recebendo JSONs.
-
-A API é implementado em C\# utilizando o ASP NET Core 2.2 e Entity Framework Core para acesso ao banco de dados. Seguindo o padrão MVC o projeto é dividido em 3 partes, os Controllers que representam a camada de Views, as Business que representam a camada de Controllers e os Repositories que representam a camada de Models.
+A API é implementado em C\# utilizando o ASP NET Core 2.2\cite{aspnetcore} e Entity Framework Core\cite{entityFramework} para acesso ao banco de dados.
 
 \subsection{Usuários}
 \label{subsec:usuários}
 
-Os usuários são representados pela classe user. Cada usuário tem um Username único e uma lista de roles que determinam quais funcionalidades da API o usuário tem acesso. A senha do usuário é passada pelo algoritmo HMAC-SHA521 e somente o hash resultante e o salt utilizados são salvos no banco.
+Os usuários são representados pela classe user. Cada usuário tem um Username único e uma lista de roles que determinam quais funcionalidades da API o usuário tem acesso. A senha do usuário é passada pelo algoritmo HMAC-SHA521\cite{rcfHAMAC} e somente o hash resultante e o salt utilizados são salvos no banco.
 
 Um usuário pode ser tanto um jogador como um administrador, podendo ser ambos dependendo das Roles dadas ao usuário. 
 
@@ -191,20 +188,20 @@ O acesso a API é feito através da biblioteca LigaFit. A LigaFit, inspirado pel
 
 \section{React}
 \label{sec:react}
-
+As funções administrativas são disponibilizadas para o usuário através de um web site desenvolvido em React\cite{react}. O web site permite a um usuário administrador gerir as questões e usuários e obter informações sobre a taxa de acertos e erros das questões. 
 
 \subsection{Login}
 \label{subsec:loginreact}
 
 A tela de login possui campos para o Username e a senha do usuário, além de uma opção para lembrar do login em visitas futuras.
 
-Qualquer usuário pode logar no dashboard, porém somente os que tenham o role de Admin verá e terá acesso a maioria das funções.
+Qualquer usuário pode logar no web site, porém somente os que tenham credenciais de administrador terão acesso a maioria das funções.
 
 
 \subsection{Questões}
 \label{subsec:questoesreact}
 
-O dashboard mostra a lista de questões em ordem alfabética, junto com se a questão está ativa.
+O web site  mostra a lista de questões em ordem alfabética, junto com se a questão está ativa.
     
 O usuário pode selecionar uma questão e ser redirecionado a tela de detalhes da questão.
 
