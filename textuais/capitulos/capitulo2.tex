@@ -6,6 +6,8 @@ As ferramentas escolhidas para o desenvolvimento do projeto foram a Unity3D para
 \section{Estrutura}
 \label{sec:estrutura}
 
+A figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clientes (Web ou Unity) fazem requisições  para uma API que busca ou guarda os dados em um banco de dados relacional (SQL Server) e retorna o resultado da operação.
+
 \begin{figure}[htb]
 \caption{\label{fig:estrutura} Fluxo De Dados }
 \begin{center}
@@ -14,7 +16,6 @@ As ferramentas escolhidas para o desenvolvimento do projeto foram a Unity3D para
 \legend{Fonte: própria} 
 \end{figure}
 
-A figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clientes (Web ou Unity) fazem requisições  para uma API que busca ou guarda os dados em um banco de dados relacional (SQL Server) e retorna o resultado da operação.
 
 \section{REST API}
 \label{sec:restapi}
@@ -179,7 +180,7 @@ As transições e comunicação entre scripts são feitas por meio de eventos qu
 \subsubsection{Scriptable Objects}
 \label{subsubsec:scriptableobjects}
 
-Lorem Ipsum
+Um ScriptableObject é um contêiner de dados utilizado para salvar grandes quantias de dados, independente de instâncias de classes. Um dos principais casos de uso para ScriptableObjects é para reduzir a utilização de memória de um projeto por evitar a cópia de valores entre múltiplos objetos.\cite{scriptableobject}
 
 
 \subsubsection{Game Events}
