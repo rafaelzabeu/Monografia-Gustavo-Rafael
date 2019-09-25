@@ -6,7 +6,7 @@ As ferramentas escolhidas para o desenvolvimento do projeto foram a Unity3D para
 \section{Estrutura}
 \label{sec:estrutura}
 
-A figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clientes (Web ou Unity) fazem requisições  para uma API que busca ou guarda os dados em um banco de dados relacional (SQL Server) e retorna o resultado da operação.
+A Figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clientes (Web ou Unity) fazem requisições  para uma API que busca ou guarda os dados em um banco de dados relacional (SQL Server) e retorna o resultado da operação.
 
 \begin{figure}[htb]
 \caption{\label{fig:estrutura} Fluxo De Dados }
@@ -24,23 +24,25 @@ A figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clien
 A API serve como centro do projeto. Ela guarda todas as questões, usuários, opções e os rankings. Ela decide também quais e quantas questões um jogador irá receber quando uma nova partida for requisitada. 
 Os clientes e a API se comunicam utilizando o protocolo Http\cite{rcfHttp} através do protocolo rest  REST\cite{wwrest}, enviando e recebendo JSONs.
 
-A API é implementado em C\# utilizando o ASP NET Core 2.2\cite{aspnetcore} e Entity Framework Core\cite{entityFramework} para acesso ao banco de dados.
+A API é implementado em C\# utilizando o ASP NET Core 2.2 e Entity Framework Core para acesso ao banco de dados.
 
 \subsection{Usuários}
 \label{subsec:usuários}
 
-Os usuários são representados pela classe user. Cada usuário tem um Username único e uma lista de roles que determinam quais funcionalidades da API o usuário tem acesso. A senha do usuário é passada pelo algoritmo HMAC-SHA521\cite{rcfHAMAC} e somente o hash resultante e o salt utilizados são salvos no banco.
+Para poder interagir com a maioria das funções da API é necessário que usuário crie uma conta e logue com ela.
+Cada usuário possui Username único que o identifica e uma lista de cargos que determinam quais funcionalidades da API o usuário tem acesso. 
+A senha do usuário é passada pelo algoritmo HMAC-SHA521\cite{rcfHAMAC} e somente o hash resultante e o salt utilizados são salvos no banco.
 
-Um usuário pode ser tanto um jogador como um administrador, podendo ser ambos dependendo das Roles dadas ao usuário. 
+Um usuário pode ser tanto um jogador como um administrador, podendo ser ambos dependendo dos cargos dados ao usuário. 
 
 A função da API para criação de usuários é a aberta, por tanto qualquer um pode se registrar, porém usuários criados assim só terão acesso às funções de jogador. Um administrador pode depois dar a um usuário acesso às funções de administração.
 
 \subsection{Controle de Acesso}
 \label{subsec:acesso}
 
-Cada função da API restringe seu acesso dependendo das Roles que ela requer de um usuário acessado. Existem 2 Roles no sistema “admin” e “user” que dão acesso às funções de administração e às funções do jogo respectivamente.
+Cada função da API restringe seu acesso dependendo dos cargos que ela requer de um usuário acessado. Existem 2 cargos no sistema “admin” e “user” que dão acesso às funções de administração e às funções do jogo respectivamente.
 
-Algumas funções não requerem um usuário logado, como a função de cadastro e login, e outras só requerem que o usuário esteja logado, sem se importar com quais Roles eles possuem.
+Algumas funções não requerem um usuário logado, como a função de cadastro e login, e outras só requerem que o usuário esteja logado, sem se importar com quais cargos eles possuem.
 
 \subsection{Questões}
 \label{subsec:questoes}
@@ -62,7 +64,25 @@ Uma resposta está sempre ligada a uma única questão e somente uma resposta li
 
 Quando um jogador começa uma nova partida a API escolhe quais questões para enviar para o jogador. A escolha é feita aleatoriamente entre as questões ativas que o jogador ainda não tenha respondido. 
 
-Primeiramente as questões são filtradas para conterem somente questões ativas que o jogador não tenha respondido ainda. Depois um número aleatório é gerado e é feito um “ou exclusivo” entre este número e o número aleatório de cada questão e as questões são ordenadas de acordo com os números resultantes. Por fim a quantidade necessária de questões é pega a partir do começo da lista.
+\begin{table}[]
+\caption{\label{table:xorExemple} Exemplo de "ou exclusivo"}
+\centering
+\begin{tabular}{|c|c|c|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\multicolumn{2}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{Input}} & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}} \\ \cline{1-2}
+\rowcolor[HTML]{C0C0C0} 
+\textbf{A} & \textbf{B} & \multicolumn{2}{c|}{\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\textbf{Output}}} \\ \hline
+0 & 0 & \multicolumn{2}{c|}{0} \\ \hline
+0 & 1 & \multicolumn{2}{c|}{1} \\ \hline
+1 & 0 & \multicolumn{2}{c|}{1} \\ \hline
+1 & 1 & \multicolumn{2}{c|}{0} \\ \hline
+54 & 90 & \multicolumn{2}{c|}{108} \\ \hline
+1620668800 & 4194220096 & \multicolumn{2}{c|}{2573715904} \\ \hline
+\end{tabular}
+\end{table}
+
+Primeiramente as questões são filtradas para conterem somente questões ativas que o jogador não tenha respondido ainda. Depois um número aleatório é gerado e é feito um “ou exclusivo” (demonstrado na Tabela \ref{table:xorExemple}) entre este número e o número aleatório de cada questão e as questões são ordenadas de acordo com os números resultantes. Por fim a quantidade necessária de questões é pega a partir do começo da lista.
 
 Caso depois do processo não existam questões suficientes para uma partida, a lista de questões que o jogador já respondeu é apagada e o processo é repetido excluindo as questões que já tenham sido escolhidas anteriormente e o número de questões faltando são escolhidas. Se mesmo assim não houverem questões suficientes a partida começa com questões faltando.
 
@@ -78,7 +98,8 @@ Os pontos são adicionados a cada ranking e o total de pontos conseguidos e a no
 \subsection{Rankings}
 \label{subsec:rankings}
 
-O jogo possui 3 rankings por padrão, um semanal, um mensal que são reiniciados a cada 7 dias e a cada 30 dias respectivamente e um perpétuo que nunca é reiniciado.     Administradores podem criar rankings adicionais com configurações diferentes. Os rankings são públicos e atualizados cada vez que uma partida termina.
+O jogo possui 3 rankings por padrão, um semanal, um mensal que são reiniciados a cada 7 dias e a cada 30 dias respectivamente e um perpétuo que nunca é reiniciado.
+Os rankings são públicos e atualizados cada vez que uma partida termina.
 
 \subsubsection{Reiniciando Rankings}
 \label{subsubsec:reiniciando}
@@ -212,7 +233,7 @@ O acesso a API é feito através da biblioteca LigaFit. A LigaFit, inspirado pel
 
 \section{React}
 \label{sec:react}
-As funções administrativas são disponibilizadas para o usuário através de um web site desenvolvido em React\cite{react}. O web site permite a um usuário administrador gerir as questões e usuários e obter informações sobre a taxa de acertos e erros das questões. 
+As funções administrativas são disponibilizadas para o usuário através de um web site desenvolvido em React. O web site permite a um usuário administrador gerir as questões e usuários e obter informações sobre a taxa de acertos e erros das questões. 
 
 \subsection{Login}
 \label{subsec:loginreact}
