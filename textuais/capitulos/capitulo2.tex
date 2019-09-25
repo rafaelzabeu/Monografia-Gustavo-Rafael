@@ -215,7 +215,7 @@ O Scriptable Obejct é composto de duas partes, o modelo e o objeto. <TODO>
 
 Game Events são scripts especiais derivados do Scriptable Object que podem enviar um sinal para vários Game Event Listener indicando uma mudança ou uma reação. Os Game Event Listeners são componentes que, quando dentro de um Game Object ativo em uma cena, ao receber um aviso de um Game Event identificado, responde chamando uma função especificada. Este sistema permite que Game Object respondam à mudanças de estado sem precisar monitorar uma variável constantemente.\cite{scriptableobjectarchitecture}
 
-A Figura  mostra o componente Game Event Listener dentro de um Game Object, quando o evento OnLoginToThemeSelection é acionado, a função OnLoginToThemeSelection do script MenusController no Game Object Main. Isso permite que não seja necessária uma referência direta do quem acionou o evento e quem responde a ele, melhorando a organização do projeto ao fazer cada script controlar apenas seu próprio comportamento.
+A Figura 3.2 mostra o componente Game Event Listener dentro de um Game Object, quando o evento OnLoginToThemeSelection é acionado, a função OnLoginToThemeSelection do script MenusController no Game Object Main. Isso permite que não seja necessária uma referência direta do quem acionou o evento e quem responde a ele, melhorando a organização do projeto ao fazer cada script controlar apenas seu próprio comportamento.
 
 \begin{figure}[htb]
 \caption{\label{fig:estrutura} Sistema de Game Event }
