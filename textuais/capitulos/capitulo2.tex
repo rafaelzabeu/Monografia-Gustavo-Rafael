@@ -22,7 +22,7 @@ A figura 3.1 demostra o fluxo de dados entre os componentes do projeto, os clien
 
 
 A API serve como centro do projeto. Ela guarda todas as questões, usuários, opções e os rankings. Ela decide também quais e quantas questões um jogador irá receber quando uma nova partida for requisitada. 
-Os clientes e a API se comunicam utilizando o protocolo Http\cite{fielding_reschke_2014} através do protocolo rest  REST\cite{wwrest}, enviando e recebendo JSONs.
+Os clientes e a API se comunicam utilizando o protocolo Http\cite{rcfHttp} através do protocolo rest  REST\cite{wwrest}, enviando e recebendo JSONs.
 
 A API é implementado em C\# utilizando o ASP NET Core 2.2\cite{aspnetcore} e Entity Framework Core\cite{entityFramework} para acesso ao banco de dados.
 
@@ -92,6 +92,11 @@ O processo de reiniciar os rankings é feito por um serviço periódico que roda
 
 O desenvolvimento da aplicação do projeto foi feita utilizando a Engine de jogos Unity3D. As principais vantagens obtidas por escolher a Unity3D como ambiente de desenvolvimento foram: a facilidade de criar projetos
 para plataformas diferentes utilizando a mesma base de código e design visual, um sistema intuitivo e visual de criação de telas e a familiaridade do Laboratória de Inovação de Games e Apps.(LIGA) com projetos feitos com a engine para suporte posterior.
+
+<TODO>
+Game Object
+Cena
+Hierarquia
 
 \subsection{Telas}
 \label{subsec:telas}
@@ -182,12 +187,22 @@ As transições e comunicação entre scripts são feitas por meio de eventos qu
 
 Um ScriptableObject é um contêiner de dados utilizado para salvar grandes quantias de dados, independente de instâncias de classes. Um dos principais casos de uso para ScriptableObjects é para reduzir a utilização de memória de um projeto por evitar a cópia de valores entre múltiplos objetos.\cite{scriptableobject}
 
+O Scriptable Obejct é composto de duas partes, o modelo e o objeto. <TODO>
 
 \subsubsection{Game Events}
 \label{subsubsec:gameevents}
 
-Lorem Ipsum
+Game Events são scripts especiais derivados do Scriptable Object que podem enviar um sinal para vários Game Event Listener indicando uma mudança ou uma reação. Os Game Event Listeners são componentes que, quando dentro de um Game Object ativo em uma cena, ao receber um aviso de um Game Event identificado, responde chamando uma função especificada. Este sistema permite que Game Object respondam à mudanças de estado sem precisar monitorar uma variável constantemente.\cite{scriptableobjectarchitecture}
 
+A Figura  mostra o componente Game Event Listener dentro de um Game Object, quando o evento OnLoginToThemeSelection é acionado, a função OnLoginToThemeSelection do script MenusController no Game Object Main. Isso permite que não seja necessária uma referência direta do quem acionou o evento e quem responde a ele, melhorando a organização do projeto ao fazer cada script controlar apenas seu próprio comportamento.
+
+\begin{figure}[htb]
+\caption{\label{fig:estrutura} Sistema de Game Event }
+\begin{center}
+\includegraphics[scale=0.75]{GameEventListener}
+\end{center}
+\legend{Fonte: própria} 
+\end{figure}
 
 \subsection{Acesso à API}
 \label{subsec:acessoapi}
