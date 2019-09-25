@@ -7,11 +7,11 @@ As ferramentas escolhidas para o desenvolvimento do projeto foram a Unity3D para
 \label{sec:estrutura}
 
 \begin{figure}[htb]
-\caption{\label{fig:comparacaoaprendizado} Comparaçao entre aprendizados}
+\caption{\label{fig:estrutura} Estrutura do projeto}
 \begin{center}
-\includegraphics[scale=0.75]{ComparaAprendizado}
+\includegraphics[scale=0.75]{Estrutura}
 \end{center}
-\legend{Fonte: \citeauthor{mediummachine}, \citeyear{mediummachine}} 
+\legend{Fonte: própria} 
 \end{figure}
 
 A aplicações se comunicam com o servidor por meio do protocolo REST.
@@ -147,6 +147,14 @@ A tela de ranking contém uma lista mostrando os melhores colocados em cada rank
 
 A tela de perguntas é separada em duas partes, a área que mostra a pergunta escolhida pelo sistema, e a área dedicada às respostas que o usuário pode escolher.
 
+A parte separada para a pergunta possui espaço suficiente para conter uma imagem e um pequeno texto explicativo para melhor entendimento do usuário. Esta parte é adaptativa e pode mudar seu tamanho dependendo do tamanho e quantidade de elementos presentes.
+
+As respostas podem estar dispostas de duas maneiras. A primeira é como uma lista vertical caso as respostas sejam compostas somente por texto, deixando um espaço maior no eixo horizontal para deixa a leitura mais simples. Na segunda disposição, cada resposta ocupa um canto da área. Essa disposição permite que as respostas tenham uma imagem e um espaço para uma pequena descrição.
+
+O usuário precisa escolher uma resposta, que ficará marcada como selecionada, e em seguida, precisa interagir com o botão “Próximo” para enviar sua seleção para o servidor. Logo em seguida, a resposta correta será indicada para o usuário, tendo um feedback instantâneo sobre sua escolha.
+
+Quando o usuário estiver na última pergunta de uma partida o botão “Próximo” muda para mostrar o texto “Terminar” e quando o usuário receber o feedback da resposta escolhida, ele será redirecionado para a tela de resultados.
+
 
 \subsubsection{Resultado}
 \label{subsubsec:resultado}
@@ -163,7 +171,7 @@ A tela de carregando aparece toda vez que alguma operação que requer que usuá
 \subsubsection{Erros}
 \label{subsubsec:erros}
 
-A janela de erros aparece na frente de todas as outras telas informando que algo de errado aconteceu junto de um botão que fecha a janela.
+A janela de erros aparece na frente de todas as outras telas informando o usuário que algo de errado aconteceu junto de um botão que fecha a janela.
 
 \subsection{Scriptable Objects Architecture}
 \label{subsec:scriptableobjectsarch}
